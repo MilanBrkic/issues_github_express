@@ -7,56 +7,87 @@ const IssueModel = require('../db/model');
 
 chai.use(chaiHttp);
 
-function deleteAll(){
+function deleteAll() {
     //delete all issues
     IssueModel.deleteMany({}, (err) => err);
 }
 
+function addIssue(){
+    let issue = {
+        title: "de ti titula get",
+        text: "de ti tekst",
+        user: "de ti user",
+        closed: false,
+        file: new Array(),
+        comment: new Array()
+    }
+
+    const model = new IssueModel(issue);
+    model
+        .save()
+        .then(result => {
+            res.send(result)
+        })
+        .catch(err => {
+            throw err
+        });
+}
+
 describe('hooks', function () {
-    
+
     beforeEach(() => {
         deleteAll();
-     });
+    });
 
-     
-    describe('GET api/issues', ()=>{
-        
+
+    after(() => {
+        deleteAll();
+    })
+
+    describe('GET api/issues', () => {
+
         it('GET zero', (done) => {
             chai.request(app)
                 .get('/api/issues')
                 .end((err, res) => {
                     res.should.have.status(200);
-                    res.body.should.be.a('object');
+                    res.body.should.be.a('array');
+                    res.body.length.should.be.eql(0);
                     done();
                 });
         })
 
 
         it('GET one', (done) => {
-            let issue = {
-                title: "de ti titula get",
-                text: "de ti tekst",
-                user: "de ti user",
-                closed: false,
-                file: new Array(),
-                comment: new Array()
-            }
-
-            const model = new IssueModel(issue);
-            model
-                .save()
-                .then(result => {
-                    res.send(result)
-                })
-                .catch(err => {
-                    throw err
-                });
+            addIssue();
 
             chai.request(app)
                 .get('/api/issues')
                 .end((err, res) => {
                     res.should.have.status(200);
-                    console.log(res.body);
+                    res.body.should.be.a('array');
+                    res.body.length.should.be.eql(1);
+                    done();
+                });
+        })
+
+        it('GET check properties', (done) => {
+            addIssue();
+
+            chai.request(app)
+                .get('/api/issues')
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    res.body.length.should.be.eql(1);
+                    var arr = res.body[0];
+                    arr.should.have.property('file').and.to.be.an('array');
+                    arr.should.have.property('comment').and.to.be.an('array');
+                    arr.should.have.property('_id').and.to.be.a('string');
+                    arr.should.have.property('title').and.to.be.a('string');
+                    arr.should.have.property('text').and.to.be.a('string');
+                    arr.should.have.property('user').and.to.be.a('string');
+                    arr.should.have.property('closed').and.to.be.a('boolean');
                     done();
                 });
         })
