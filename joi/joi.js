@@ -6,7 +6,7 @@ const joiIssueSchema = Joi.object({
     text: Joi.string().required(),
     user: Joi.string().required(),
     closed: Joi.boolean().required(),
-    image: Joi.array(),
+    file: Joi.array(),
     comment: Joi.array().items(Joi.object({
         user: Joi.string().required(),
         text: Joi.string().required()

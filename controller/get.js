@@ -1,5 +1,4 @@
-const joi = require('../joi/joi');
-const issueModel = require('../db/model');
+const IssueModel = require('../db/model');
 
 
 exports.issues_get = async (req,res)=>{
@@ -10,5 +9,7 @@ exports.issues_get = async (req,res)=>{
         res.send(error)
     }
 }
+
+
 
 

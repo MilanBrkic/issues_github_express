@@ -12,7 +12,7 @@ const issueSchema = db.Schema({
     text: String,
     user: String,
     closed: Boolean,
-    image: [String],
+    file: [String],
     comment: [commentSchema]
 })
 
