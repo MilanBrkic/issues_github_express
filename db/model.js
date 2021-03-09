@@ -1,4 +1,4 @@
-const connect = require('./db/db.js');
+const connect = require('./db.js');
 const db = connect();
 
 
