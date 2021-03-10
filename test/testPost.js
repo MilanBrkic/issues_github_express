@@ -75,6 +75,18 @@ describe('hooks', function () {
                 })
         })
 
+        it('Post non multipart/form-data', (done) => {
+            chai.request(app)
+                .post('/api/issues/add')
+                .set('content-type', 'raw')
+                .end( (err, res) => {
+                    if(err) console.log(err);
+                    res.should.have.status(400);
+                    res.body.should.be.a('object');
+                    done();
+                })
+        })
+
         it('Post basic test without file', (done) => {
             chai.request(app)
                 .post('/api/issues/add')
@@ -193,26 +205,6 @@ describe('hooks', function () {
                 })
         })
 
-        it('Post two files', (done)=>{
-            chai.request(app)
-                .post('/api/issues/add')
-                .set('content-type', 'multipart/form-data')
-                .field('title', "de ti titula")
-                .field('text', "de ti tekst")
-                .field('user', 'de ti user')
-                .attach('file', fs.readFileSync('./test/test-pic.jpg'), 'test-pic.jpg')
-                .attach('file', fs.readFileSync('./test/test-pic.jpg'), 'test-pic.jpg')
-                .end( (err, res) => {
-                    if(err) console.log(err);
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('file').and.to.be.an('array');
-                    res.body.file.length.should.be.eql(2);
-                    done()
-                    
-                })
-        })
-
         it('Post more than 10 files', (done)=>{
             const file = fs.readFileSync('./test/test-pic.jpg')
             chai.request(app)
@@ -247,6 +239,27 @@ describe('hooks', function () {
                 })
         })
 
+        it('Post two files', (done)=>{
+            chai.request(app)
+                .post('/api/issues/add')
+                .set('content-type', 'multipart/form-data')
+                .field('title', "de ti titula")
+                .field('text', "de ti tekst")
+                .field('user', 'de ti user')
+                .attach('file', fs.readFileSync('./test/test-pic.jpg'), 'test-pic.jpg')
+                .attach('file', fs.readFileSync('./test/test-pic.jpg'), 'test-pic.jpg')
+                .end( (err, res) => {
+                    if(err) console.log(err);
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('file').and.to.be.an('array');
+                    res.body.file.length.should.be.eql(2);
+                    done()
+                    
+                })
+        })
+
+        
         
 
     })
