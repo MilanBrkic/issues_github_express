@@ -4,8 +4,12 @@ const controllerGet = require('../controller/get');
 const controllerPost = require('../controller/post');
 const controllerDelete = require('../controller/delete');
 const upload = require('../multer/multer');
+const joi = require('../joi/joi');
+
 
 router.get('/', controllerGet.getAllIssues)
+
+
 
 router.use('/add', upload.array('file', 10));
 router.post('/add', controllerPost.addIssue);

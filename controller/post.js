@@ -1,15 +1,16 @@
 const IssueModel = require('../db/model');
+const fs = require('fs');
+const path = require('path');
 const joi = require('../joi/joi');
 
-exports.addIssue= async (req, res)=>{
+exports.addIssue = async (req, res) => {
     try {
         var pics = new Array();
         req.files.forEach(element => {
             var path = element.path;
-            path = path.replace("\\",'/');
+            path = path.replace("\\", '/');
             pics.push(path);
         });
-
 
         var issue = {
             title: req.body.title,
@@ -19,12 +20,16 @@ exports.addIssue= async (req, res)=>{
             file: pics,
             comment: new Array()
         };
-
-        const value = await joi.joiIssueSchema.validateAsync(issue).catch(err => { throw err });
+        const value = await joi.joiIssueSchema.validateAsync(issue)
+                                                .catch(err => {
+                                                    req.files.forEach(element => {
+                                                        fs.unlink(path.join(element.path), ()=>{});
+                                                    });
+                                                    throw err;
+                                                });
 
         const model = new IssueModel(issue);
-        model
-            .save()
+        model.save()
             .then(result => {
                 res.send(result)
             })
@@ -32,6 +37,6 @@ exports.addIssue= async (req, res)=>{
                 throw err
             });
     } catch (error) {
-        res.send(error);
+        res.status(400).send(error);
     }
 }
