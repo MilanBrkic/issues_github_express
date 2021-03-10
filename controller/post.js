@@ -1,7 +1,7 @@
 const IssueModel = require('../db/model');
 const joi = require('../joi/joi');
 
-exports.issues_add = async (req, res)=>{
+exports.addIssue= async (req, res)=>{
     try {
         var pics = new Array();
         req.files.forEach(element => {

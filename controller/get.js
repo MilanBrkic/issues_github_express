@@ -1,7 +1,7 @@
 const IssueModel = require('../db/model');
 
 
-exports.issues_get = async (req,res)=>{
+exports.getAllIssues= async (req,res)=>{
     try {
         var issues = await IssueModel.find();
         res.send(issues);
