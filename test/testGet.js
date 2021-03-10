@@ -26,7 +26,7 @@ function addIssue(){
     model
         .save()
         .then(result => {
-            res.send(result)
+            return result;
         })
         .catch(err => {
             throw err
@@ -45,7 +45,6 @@ describe('hooks', function () {
     })
 
     describe('GET api/issues', () => {
-
         it('GET zero', (done) => {
             chai.request(app)
                 .get('/api/issues')
