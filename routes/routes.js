@@ -11,6 +11,8 @@ router.get('/', controllerGet.getAllIssues);
 
 router.get('/:id', controllerGet.getOneIssue);
 
+router.get('/uploads/:link', controllerGet.downloadImage);
+
 function uploadFile(req,res,next){
     const u = upload.array('file',10);
     

@@ -7,13 +7,11 @@ const multer = require('multer');
 
 exports.addIssue = async (req, res) => {
     try {
-
-        
-
         var pics = new Array();
         req.files.forEach(element => {
-            var path = element.path;
+            var path = element.filename;
             path = path.replace("\\", '/');
+            path = path.replace(" ", "-");
             pics.push(path);
         });
 

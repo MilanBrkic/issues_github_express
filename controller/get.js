@@ -19,4 +19,12 @@ exports.getOneIssue = async(req,res)=>{
     }
 }
 
+exports.downloadImage = async(req,res)=>{
+    try {
+        res.download("./uploads/"+req.params.link);
+    } catch (error) {
+        res.send(error);
+    }
+}
+
 
