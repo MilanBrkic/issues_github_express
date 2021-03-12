@@ -10,6 +10,13 @@ exports.getAllIssues= async (req,res)=>{
     }
 }
 
-
+exports.getOneIssue = async(req,res)=>{
+    try {
+        var result = await IssueModel.findById(req.params.id);
+        res.send(result);
+    } catch (error) {
+        res.send(error);
+    }
+}
 
 

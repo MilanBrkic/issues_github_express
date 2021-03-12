@@ -7,7 +7,9 @@ const upload = require('../multer/multer');
 const multer = require('multer');
 
 
-router.get('/', controllerGet.getAllIssues)
+router.get('/', controllerGet.getAllIssues);
+
+router.get('/:id', controllerGet.getOneIssue);
 
 function uploadFile(req,res,next){
     const u = upload.array('file',10);
