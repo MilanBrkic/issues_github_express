@@ -1,5 +1,5 @@
 const IssueModel = require('../db/model');
-
+const path = require('path');
 
 exports.getAllIssues= async (req,res)=>{
     try {
@@ -19,12 +19,31 @@ exports.getOneIssue = async(req,res)=>{
     }
 }
 
-exports.downloadImage = async(req,res)=>{
+exports.downloadFile = async(req,res)=>{
     try {
         res.download("./uploads/"+req.params.link);
     } catch (error) {
         res.send(error);
     }
 }
+
+exports.viewFile = async(req,res)=>{
+    const options = {
+        root: path.join('./uploads'),
+        dotfiles: 'deny',
+        headers: {
+          'x-timestamp': Date.now(),
+          'x-sent': true
+        }
+      }
+
+    try {
+        res.sendFile(req.params.link, options)
+    } catch (error) {
+        res.send(error);
+    }
+}
+
+
 
 

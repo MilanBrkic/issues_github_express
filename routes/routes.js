@@ -6,13 +6,6 @@ const controllerDelete = require('../controller/delete');
 const upload = require('../multer/multer');
 const multer = require('multer');
 
-
-router.get('/', controllerGet.getAllIssues);
-
-router.get('/:id', controllerGet.getOneIssue);
-
-router.get('/uploads/:link', controllerGet.downloadImage);
-
 function uploadFile(req,res,next){
     const u = upload.array('file',10);
     
@@ -27,6 +20,17 @@ function uploadFile(req,res,next){
 }
 
 router.use('/add', uploadFile);
+
+router.get('/', controllerGet.getAllIssues);
+
+router.get('/:id', controllerGet.getOneIssue);
+
+router.get('/uploads/download/:link', controllerGet.downloadFile);
+
+router.get('/uploads/:link', controllerGet.viewFile);
+
+
+
 
 router.post('/add', controllerPost.addIssue);
 
