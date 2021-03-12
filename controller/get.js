@@ -15,7 +15,7 @@ exports.getOneIssue = async(req,res)=>{
         var result = await IssueModel.findById(req.params.id);
         res.send(result);
     } catch (error) {
-        res.send(error);
+        res.status(400).send({msg:"id does not exist",err:error});
     }
 }
 

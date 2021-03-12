@@ -12,7 +12,7 @@ function deleteAll() {
     IssueModel.deleteMany({}, (err) => err);
 }
 
-function addIssue(){
+function addIssue() {
     let issue = {
         title: "de ti titula get",
         text: "de ti tekst",
@@ -23,14 +23,14 @@ function addIssue(){
     }
 
     const model = new IssueModel(issue);
-    model
-        .save()
+    model.save()
         .then(result => {
-            return result;
+
         })
         .catch(err => {
             throw err
         });
+    return model;
 }
 
 describe('hooks', function () {
@@ -89,6 +89,39 @@ describe('hooks', function () {
                     arr.should.have.property('closed').and.to.be.a('boolean');
                     done();
                 });
+        })
+    })
+
+    describe("GET api/issues/:id", () => {
+        it("GET specific", (done) => {
+            var result = addIssue();
+            chai.request(app)
+                .get('/api/issues/' + result._id)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('file').and.to.be.an('array');
+                    res.body.should.have.property('comment').and.to.be.an('array');
+                    res.body.should.have.property('title').and.to.be.eql(result.title);
+                    res.body.should.have.property('text').and.to.be.eql(result.text);
+                    res.body.should.have.property('user').and.to.be.eql(result.user);
+                    res.body.should.have.property('closed').and.to.be.eql(result.closed);
+                    done();
+
+                })
+        })
+
+        it("GET specific wrong id", (done) => {
+            var result = addIssue();
+            chai.request(app)
+                .get('/api/issues/1234' )
+                .end((err, res) => {
+                    res.should.have.status(400);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('err');
+                    done();
+
+                })
         })
     })
 })
