@@ -30,6 +30,9 @@ router.get('/uploads/:link', controllerGet.viewFile);
 router.use('/', uploadFile);
 router.post('/', controllerPost.addIssue);
 
+router.delete('/:id', controllerDelete.deleteOne);
+
 router.delete('/delete/all', controllerDelete.deleteAll);
+
 
 module.exports = router;
