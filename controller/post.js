@@ -3,7 +3,6 @@ const fs = require('fs');
 const path = require('path');
 const joi = require('../joi/joi');
 const upload = require('../multer/multer');
-const multer = require('multer');
 
 exports.addIssue = async (req, res) => {
     try {
@@ -11,7 +10,7 @@ exports.addIssue = async (req, res) => {
         req.files.forEach(element => {
             var path = element.filename;
             path = path.replace("\\", '/');
-            path = path.replace(" ", "-");
+            path = path.replace(/ /g, "-");
             pics.push(path);
         });
 

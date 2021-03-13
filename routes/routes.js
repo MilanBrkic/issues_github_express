@@ -34,5 +34,4 @@ router.delete('/:id', controllerDelete.deleteOne);
 
 router.delete('/delete/all', controllerDelete.deleteAll);
 
-
 module.exports = router;
