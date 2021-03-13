@@ -2,33 +2,13 @@ process.env.NODE_ENV = 'test'
 const app = require('../server');
 let chai = require('chai');
 let chaiHttp = require('chai-http');
-let should = chai.should();
-const IssueModel = require('../db/model');
+chai.should();
 chai.use(chaiHttp);
 
-const testUploads = './test/uploads';
 const fs = require('fs');
-const path = require('path');
 
-const fsExtra = require('fs-extra')
-
-
-
-function deleteAll() {
-
-    //delete all issues
-    try {
-        IssueModel.deleteMany({}, (err) => {
-            if (err) throw err
-
-            fsExtra.emptyDirSync(testUploads)
-        });
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
+const funcs = require('./testFunctions')
+const deleteAll = funcs.deleteAll;
 
 describe('routes', function () {
 

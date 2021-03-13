@@ -2,36 +2,13 @@ process.env.NODE_ENV = 'test'
 const app = require('../server');
 let chai = require('chai');
 let chaiHttp = require('chai-http');
-let should = chai.should();
-const IssueModel = require('../db/model');
+chai.should();
 
 chai.use(chaiHttp);
 
-function deleteAll() {
-    //delete all issues
-    IssueModel.deleteMany({}, (err) => err);
-}
-
-function addIssue() {
-    let issue = {
-        title: "de ti titula get",
-        text: "de ti tekst",
-        user: "de ti user",
-        closed: false,
-        file: new Array(),
-        comment: new Array()
-    }
-
-    const model = new IssueModel(issue);
-    model.save()
-        .then(result => {
-
-        })
-        .catch(err => {
-            throw err
-        });
-    return model;
-}
+const funcs = require('./testFunctions')
+const deleteAll = funcs.deleteAll;
+const addIssue = funcs.addIssue;
 
 describe('routes', function () {
 
@@ -44,7 +21,7 @@ describe('routes', function () {
         deleteAll();
     })
 
-    describe('GET api/issues', () => {
+    describe('GET /api/issues', () => {
         describe('Return zero issues', () => {
             it('status code 200 and empty array', (done) => {
                 chai.request(app)
@@ -97,7 +74,7 @@ describe('routes', function () {
         })
     })
 
-    describe("GET api/issues/:id", () => {
+    describe("GET /api/issues/:id", () => {
         describe("Specific issue", (done) => {
             it("status code 200 and returns id specified issue", (done) => {
                 var result = addIssue();
