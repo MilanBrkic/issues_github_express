@@ -120,7 +120,6 @@ describe('hooks', function () {
                     res.body.should.be.a('object');
                     res.body.should.have.property('err');
                     done();
-
                 })
         })
     })

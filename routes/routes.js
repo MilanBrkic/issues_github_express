@@ -30,9 +30,8 @@ router.get('/uploads/download/:link', controllerGet.downloadFile);
 router.get('/uploads/:link', controllerGet.viewFile);
 
 
-
-
 router.post('/add', controllerPost.addIssue);
+
 
 router.delete('/delete', controllerDelete.deleteAll);
 
