@@ -43,7 +43,3 @@ exports.viewFile = async(req,res)=>{
         res.send(error);
     }
 }
-
-
-
-

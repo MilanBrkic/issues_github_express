@@ -19,8 +19,6 @@ function uploadFile(req,res,next){
     })
 }
 
-router.use('/add', uploadFile);
-
 router.get('/', controllerGet.getAllIssues);
 
 router.get('/:id', controllerGet.getOneIssue);
@@ -29,10 +27,9 @@ router.get('/uploads/download/:link', controllerGet.downloadFile);
 
 router.get('/uploads/:link', controllerGet.viewFile);
 
+router.use('/', uploadFile);
+router.post('/', controllerPost.addIssue);
 
-router.post('/add', controllerPost.addIssue);
-
-
-router.delete('/delete', controllerDelete.deleteAll);
+router.delete('/delete/all', controllerDelete.deleteAll);
 
 module.exports = router;
