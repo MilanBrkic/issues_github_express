@@ -1,8 +1,8 @@
 const IssueModel = require('../db/model');
 var uploads;
-if(process.env.NODE_ENV === 'test')uploads = './test/uploads'
+if(process.env.NODE_ENV === 'test') uploads = './test/uploads'
 else uploads = './uploads'
-
+const fsExtra = require('fs-extra')
 const fs = require('fs');
 const path = require('path');
 const mongoose  = require('mongoose')
@@ -23,12 +23,7 @@ exports.deleteAll = async (req, res) => {
             if (err) throw err;
             
             //delete all files
-            fs.readdir(uploads, (err, files) => {
-                if (err) throw err;
-        
-                deleteFiles(uploads, files)
-            });
-
+            fsExtra.emptyDirSync(uploads)
             r = result;
         });
         res.send(r);
