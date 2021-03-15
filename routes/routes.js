@@ -6,9 +6,6 @@ const controllerDelete = require('../controller/delete');
 const upload = require('../multer/multer');
 const multer = require('multer');
 
-
-router.get('/', controllerGet.getAllIssues)
-
 function uploadFile(req,res,next){
     const u = upload.array('file',10);
     
@@ -22,10 +19,19 @@ function uploadFile(req,res,next){
     })
 }
 
-router.use('/add', uploadFile);
+router.get('/', controllerGet.getAllIssues);
 
-router.post('/add', controllerPost.addIssue);
+router.get('/:id', controllerGet.getOneIssue);
 
-router.delete('/delete', controllerDelete.deleteAll);
+router.get('/uploads/download/:link', controllerGet.downloadFile);
+
+router.get('/uploads/:link', controllerGet.viewFile);
+
+router.use('/', uploadFile);
+router.post('/', controllerPost.addIssue);
+
+router.delete('/:id', controllerDelete.deleteOne);
+
+router.delete('/delete/all', controllerDelete.deleteAll);
 
 module.exports = router;

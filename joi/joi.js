@@ -1,21 +1,19 @@
 const Joi = require('joi');
 
+const joiCommentSchema = Joi.object({
+    user: Joi.string().required(),
+    text: Joi.string().required()
+})
 
 const joiIssueSchema = Joi.object({
     title: Joi.string().required(),
     text: Joi.string().required(),
     user: Joi.string().required(),
     closed: Joi.boolean().required(),
-    file: Joi.array(),
-    comment: Joi.array().items(Joi.object({
-        user: Joi.string().required(),
-        text: Joi.string().required()
-    }))
+    file: Joi.any(),
+    comment: Joi.array().items(joiCommentSchema)
 })
 
-const joiCommentSchema = Joi.object({
-    user: Joi.string().required(),
-    text: Joi.string().required()
-})
 
-module.exports = {joiCommentSchema, joiIssueSchema}
+
+module.exports = {joiIssueSchema}
