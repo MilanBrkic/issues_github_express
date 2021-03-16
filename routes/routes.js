@@ -24,6 +24,7 @@ router.get('/', controllerGet.getAllIssues);
 router.get('/:id', controllerGet.getOneIssue);
 router.get('/uploads/download/:link', controllerGet.downloadFile);
 router.get('/uploads/:link', controllerGet.viewFile);
+router.get('/:id/comment', controllerGet.viewComments);
 
 router.post('/', uploadFile,controllerPost.addIssue);
 

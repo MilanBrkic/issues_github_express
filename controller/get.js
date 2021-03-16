@@ -43,3 +43,12 @@ exports.viewFile = async(req,res)=>{
         res.send(error);
     }
 }
+
+exports.viewComments = async(req,res)=>{
+    try {
+        var result = await IssueModel.findById(req.params.id);
+        res.send(result.comment);
+    } catch (error) {
+        res.status(400).send({msg:"id does not exist",err:error});
+    }
+}
