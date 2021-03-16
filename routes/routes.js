@@ -3,6 +3,7 @@ var router = express.Router();
 const controllerGet = require('../controller/get');
 const controllerPost = require('../controller/post');
 const controllerDelete = require('../controller/delete');
+const controllerPut = require('../controller/put');
 const upload = require('../multer/multer');
 const multer = require('multer');
 
@@ -27,8 +28,9 @@ router.get('/uploads/download/:link', controllerGet.downloadFile);
 
 router.get('/uploads/:link', controllerGet.viewFile);
 
-router.use('/', uploadFile);
-router.post('/', controllerPost.addIssue);
+router.post('/', uploadFile,controllerPost.addIssue);
+
+router.put('/:id' ,controllerPut.updateIssue)
 
 router.delete('/:id', controllerDelete.deleteOne);
 
