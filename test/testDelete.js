@@ -8,7 +8,7 @@ const IssueModel = require('../db/model');
 
 
 const funcs = require('./testFunctions');
-const { assert } = require('chai');
+const { assert, expect } = require('chai');
 const deleteAll = funcs.deleteAll;
 const addIssue = funcs.addIssue;
 
@@ -25,55 +25,62 @@ describe('routes', function () {
 
     describe("DELETE /api/issues/delete/all", () => {
         describe("One issue", () => {
-            it("status code 200, issue deleted", async () => {
-                await addIssue();
+            it("status code 200, issue deleted", (done) => {
+                addIssue();
                 chai.request(app)
                     .delete('/api/issues/delete/all')
-                    .end(async(err, res) => {
+                    .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.an('object');
                         res.body.should.have.property('ok').and.to.be.eql(1);
                         res.body.should.have.property('n').and.to.be.eql(1);
                         res.body.should.have.property('deletedCount').and.to.be.eql(1);
-                        var docs = await IssueModel.find();
-                        docs.should.be.an('array');
-                        docs.length.should.be.eql(0);
+                        IssueModel.find().then((docs) => {
+                            docs.should.be.an('array');
+                            docs.length.should.be.eql(0);
+                            done();
+                        });
                     })
             })
         })
 
         describe("Three issues", () => {
-            it("status code 200, issues deleted", async() => {
+            it("status code 200, issues deleted", (done) => {
                 var n = 3;
-                for (var i = 0; i < n; i++) await addIssue();
+                for (var i = 0; i < n; i++) addIssue();
                 chai.request(app)
                     .delete('/api/issues/delete/all')
-                    .end(async(err, res) => {
+                    .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.an('object');
                         res.body.should.have.property('ok').and.to.be.eql(1);
                         res.body.should.have.property('n').and.to.be.eql(n);
                         res.body.should.have.property('deletedCount').and.to.be.eql(n);
-                        var docs = await IssueModel.find();
-                        docs.should.be.an('array');
-                        docs.length.should.be.eql(0);
+                        IssueModel.find().then((docs) => {
+                            docs.should.be.an('array');
+                            docs.length.should.be.eql(0);
+                            done();
+                        });
+
                     })
             })
         })
 
         describe("Delete all but no issues in db", () => {
-            it('status code 200, no issues deleted', async() => {
+            it('status code 200, no issues deleted', (done) => {
                 chai.request(app)
                     .delete('/api/issues/delete/all')
-                    .end(async(err, res) => {
+                    .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.an('object');
                         res.body.should.have.property('ok').and.to.be.eql(1);
                         res.body.should.have.property('n').and.to.be.eql(0);
                         res.body.should.have.property('deletedCount').and.to.be.eql(0);
-                        var docs = await IssueModel.find();
-                        docs.should.be.an('array');
-                        docs.length.should.be.eql(0);
+                        IssueModel.find().then((docs) => {
+                            docs.should.be.an('array');
+                            docs.length.should.be.eql(0);
+                            done();
+                        });
                     })
             })
         })
@@ -81,12 +88,12 @@ describe('routes', function () {
 
     describe("DELETE /api/issues/:id", () => {
         describe("One issue", () => {
-            it('status code 200, issue deleted', async() => {
+            it('status code 200, issue deleted', (done) => {
                 var n = 1;
                 var result = addIssue();
                 chai.request(app)
                     .delete('/api/issues/' + result._id)
-                    .end(async(err, res) => {
+                    .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.an('object');
                         res.body.should.have.property('deleted').and.to.be.an('object');
@@ -95,8 +102,10 @@ describe('routes', function () {
                         deleted.should.have.property('user').and.to.be.eql(result.user);
                         deleted.should.have.property('text').and.to.be.eql(result.text);
                         deleted.should.have.property('closed').and.to.be.eql(result.closed);
-                        var docs = await IssueModel.findById(result.id);
-                        assert(docs,null);
+                        IssueModel.findById(result.id).then((docs) => {
+                            assert.equal(docs,null);
+                            done();
+                        });
                     })
             })
         })

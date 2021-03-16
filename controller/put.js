@@ -28,7 +28,7 @@ async function validateIdAndClosed(req) {
 
 exports.updateIssue = async (req, res) => {
     try {
-        await validateIdAndClose(req);
+        await validateIdAndClosed(req);
 
         updateIssueValidation(req);
 
