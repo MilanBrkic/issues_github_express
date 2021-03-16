@@ -46,6 +46,20 @@ function addIssue() {
     return addIssueToDb(issue);
 }
 
+
+function addClosedIssue() {
+    let issue = {
+        title: "de ti titula get",
+        text: "de ti tekst",
+        user: "de ti user",
+        closed: true,
+        file: new Array(),
+        comment: new Array()
+    }
+
+    return addIssueToDb(issue);
+}
+
 describe('test help functions', () => {
     beforeEach(() => {
         deleteAll();
@@ -63,10 +77,4 @@ describe('test help functions', () => {
     })
 })
 
-module.exports = { deleteAll, addIssue }
-
-// var result = addIssue();
-// console.log(result);
-// IssueModel.find().then((doc)=>{
-//     console.log(doc);
-// })
+module.exports = { deleteAll, addIssue, addClosedIssue }

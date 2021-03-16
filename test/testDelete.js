@@ -111,7 +111,7 @@ describe('routes', function () {
         })
 
         describe("Id is in invalid format", () => {
-            it('status 400, error: Id does not exist', (done) => {
+            it('status 400, error: Invalid id', (done) => {
                 chai.request(app)
                     .delete('/api/issues/604')
                     .end((err, res) => {
