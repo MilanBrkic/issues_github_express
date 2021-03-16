@@ -1,5 +1,7 @@
 const IssueModel = require('../db/model');
 const mongoose = require('mongoose')
+const joi = require('../joi/joi');
+
 
 function updateIssueValidation(req) {
     var attr = ['title', 'text', 'user'];
@@ -15,7 +17,7 @@ function updateIssueValidation(req) {
     if (err.length != 0) throw { error: err };
 }
 
-async function validateIdAndClose(req) {
+async function validateIdAndClosed(req) {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) throw { err: "Invalid id" };
 
     var iss = await IssueModel.findById(req.params.id);
@@ -42,7 +44,7 @@ exports.updateIssue = async (req, res) => {
 
 exports.closeIssue = async (req, res) => {
     try {
-        await validateIdAndClose(req);
+        await validateIdAndClosed(req);
 
         IssueModel.findByIdAndUpdate(req.params.id, { closed: true }, { new: true, useFindAndModify: false })
             .then((issue) => {
@@ -53,4 +55,23 @@ exports.closeIssue = async (req, res) => {
         res.status(400).send(error);
     }
 }
+
+exports.addComment = async(req,res)=>{
+    try {
+        await validateIdAndClosed(req);
+        var comment = {user: req.body.user, text:req.body.text};
+        const value = await joi.joiCommentSchema.validateAsync(comment)
+                                                .catch(err => {
+                                                    throw err;
+                                                });
+        IssueModel.findByIdAndUpdate(req.params.id, {$push:{comment}},{ new: true, useFindAndModify: false })
+                  .then((issue)=>{
+                      res.send(issue);
+                  })
+                  .catch((err)=>{throw err})
+    } catch (error) {
+        res.status(400).send(error);
+    }
+}
+
 

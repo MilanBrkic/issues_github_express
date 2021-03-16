@@ -29,6 +29,7 @@ router.post('/', uploadFile,controllerPost.addIssue);
 
 router.put('/:id' ,controllerPut.updateIssue)
 router.put('/:id/close' ,controllerPut.closeIssue)
+router.put('/:id/comment', controllerPut.addComment);
 
 router.delete('/:id', controllerDelete.deleteOne);
 router.delete('/delete/all', controllerDelete.deleteAll);
