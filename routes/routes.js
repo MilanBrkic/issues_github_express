@@ -21,19 +21,16 @@ function uploadFile(req,res,next){
 }
 
 router.get('/', controllerGet.getAllIssues);
-
 router.get('/:id', controllerGet.getOneIssue);
-
 router.get('/uploads/download/:link', controllerGet.downloadFile);
-
 router.get('/uploads/:link', controllerGet.viewFile);
 
 router.post('/', uploadFile,controllerPost.addIssue);
 
 router.put('/:id' ,controllerPut.updateIssue)
+router.put('/:id/close' ,controllerPut.closeIssue)
 
 router.delete('/:id', controllerDelete.deleteOne);
-
 router.delete('/delete/all', controllerDelete.deleteAll);
 
 module.exports = router;
