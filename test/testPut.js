@@ -12,7 +12,7 @@ const deleteAll = funcs.deleteAll;
 const addIssue = funcs.addIssue;
 const addClosedIssue = funcs.addClosedIssue;
 
-describe('routes', () => {
+describe('PUT routes', () => {
     beforeEach(() => {
         deleteAll();
     })
@@ -397,7 +397,6 @@ describe('routes', () => {
                         res.body.should.have.property('storageErrors').and.to.be.an('array');
                         res.body.storageErrors.length.should.be.eql(0);
                         done()
-
                     })
             })
         })

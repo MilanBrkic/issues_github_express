@@ -10,7 +10,7 @@ const fs = require('fs');
 const funcs = require('./testFunctions')
 const deleteAll = funcs.deleteAll;
 
-describe('routes', function () {
+describe('POST routes', function () {
 
     beforeEach(() => {
         deleteAll();

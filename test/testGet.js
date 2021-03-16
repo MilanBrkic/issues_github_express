@@ -9,8 +9,9 @@ chai.use(chaiHttp);
 const funcs = require('./testFunctions')
 const deleteAll = funcs.deleteAll;
 const addIssue = funcs.addIssue;
+const addIssueWithComment = funcs.addIssueWithComment;
 
-describe('routes', function () {
+describe('GET routes', function () {
 
     beforeEach(() => {
         deleteAll();
@@ -90,17 +91,55 @@ describe('routes', function () {
                         res.body.should.have.property('user').and.to.be.eql(result.user);
                         res.body.should.have.property('closed').and.to.be.eql(result.closed);
                         done();
-
                     })
             })
         })
 
         
-        describe("Wrong id", (done) => {
+        describe("Wrong id", () => {
             it("status code 400 and object with property err", (done) => {
                 var result = addIssue();
                 chai.request(app)
                     .get('/api/issues/1234')
+                    .end((err, res) => {
+                        res.should.have.status(400);
+                        res.body.should.be.a('object');
+                        res.body.should.have.property('err');
+                        done();
+                    })
+            })
+        })
+    })
+
+    describe('GET /api/issues/:id/comment', ()=>{
+        describe('Return comments from specific issue', ()=>{
+            it('status code 200, array of comments', (done)=>{
+                var result = addIssueWithComment();
+                var comment = result.comment;
+                console.log();
+                chai.request(app)
+                    .get('/api/issues/' + result._id+"/comment")
+                    .end((err, res) => {
+                        res.should.have.status(200);
+                        res.body.should.be.an('array');
+                        var com = res.body;
+                        com.length.should.be.eql(2);
+                        com[0].should.have.property('_id').and.to.be.eql(comment[0]._id+'');
+                        com[0].should.have.property('user').and.to.be.eql(comment[0].user);
+                        com[0].should.have.property('text').and.to.be.eql(comment[0].text);
+                        com[1].should.have.property('_id').and.to.be.eql(comment[1]._id+'');
+                        com[1].should.have.property('user').and.to.be.eql(comment[1].user);
+                        com[1].should.have.property('text').and.to.be.eql(comment[1].text);
+                        done();
+                    })
+            })
+        })
+
+        describe("Wrong id", () => {
+            it("status code 400 and object with property err", (done) => {
+                var result = addIssue();
+                chai.request(app)
+                    .get('/api/issues/1234/comment')
                     .end((err, res) => {
                         res.should.have.status(400);
                         res.body.should.be.a('object');

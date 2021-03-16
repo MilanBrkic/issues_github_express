@@ -14,7 +14,7 @@ const addIssue = funcs.addIssue;
 
 
 
-describe('routes', function () {
+describe('DELETE routes', function () {
     beforeEach(() => {
         deleteAll();
     });
