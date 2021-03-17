@@ -14,6 +14,4 @@ const joiIssueSchema = Joi.object({
     comment: Joi.array().items(joiCommentSchema)
 })
 
-
-
-module.exports = {joiIssueSchema}
+module.exports = {joiIssueSchema, joiCommentSchema}

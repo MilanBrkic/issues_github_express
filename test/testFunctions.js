@@ -46,13 +46,40 @@ function addIssue() {
     return addIssueToDb(issue);
 }
 
+
+function addClosedIssue() {
+    let issue = {
+        title: "de ti titula get",
+        text: "de ti tekst",
+        user: "de ti user",
+        closed: true,
+        file: new Array(),
+        comment: new Array()
+    }
+
+    return addIssueToDb(issue);
+}
+
+function addIssueWithComment() {
+    let issue = {
+        title: "de ti titula get",
+        text: "de ti tekst",
+        user: "de ti user",
+        closed: true,
+        file: new Array(),
+        comment: new Array({ user: 'Milan', text: 'Dobar issue' }, { user: 'Katarina', text: 'Vidjala sam bolje' })
+    }
+
+    return addIssueToDb(issue);
+}
+
 describe('test help functions', () => {
     beforeEach(() => {
         deleteAll();
     })
 
     describe('addIssue', () => {
-        it('issue should be added to the database', async() => {
+        it('issue should be added to the database', async () => {
             var result = addIssue();
             var docs = await IssueModel.findById(result.id);
             docs.should.have.property('_id').and.to.be.eql(result._id);
@@ -63,10 +90,4 @@ describe('test help functions', () => {
     })
 })
 
-module.exports = { deleteAll, addIssue }
-
-// var result = addIssue();
-// console.log(result);
-// IssueModel.find().then((doc)=>{
-//     console.log(doc);
-// })
+module.exports = { deleteAll, addIssue, addClosedIssue, addIssueWithComment }
