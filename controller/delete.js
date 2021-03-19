@@ -7,6 +7,11 @@ const fs = require('fs');
 const path = require('path');
 const mongoose  = require('mongoose')
 
+/**
+ * Deletes an array of files
+ * @param {string} folder folder that contains the array of files
+ * @param {Array.<string>} files array of file names
+ */
 function deleteFiles(folder, files){
     files.forEach(file => {
         fs.unlink(path.join(folder, file), err => {
@@ -15,6 +20,12 @@ function deleteFiles(folder, files){
     });
 }
 
+/**
+ * DELETE /api/issues/delete/all
+ * @summary Deletes all issues in the database 
+ * @tags Issue
+ * @return {Response} 200 - success response - info about deleted files
+ */
 exports.deleteAll = async (req, res) => {
     try {
         //delete all issues
@@ -33,6 +44,13 @@ exports.deleteAll = async (req, res) => {
     }
 }
 
+/**
+ * DELETE /api/issues/:id
+ * @summary deletes an issue
+ * @tags Issue
+ * @param {string} id - issue id
+ * @return {Response} 200 - scucces response - deleted issue
+ */
 exports.deleteOne = async(req,res) =>{
     try {
         if(!mongoose.Types.ObjectId.isValid(req.params.id)) throw {err: "Invalid id"};
