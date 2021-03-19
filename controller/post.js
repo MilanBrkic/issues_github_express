@@ -4,6 +4,12 @@ const path = require('path');
 const joi = require('../joi/joi');
 const upload = require('../multer/multer');
 
+/**
+ * POST /api/issues
+ * @summary Adds an issue to the database
+ * @param {Request} req request should have issue attributes in the body
+ * @returns {Response} returns the added issue to the database
+ */
 exports.addIssue = async (req, res) => {
     try {
         var pics = new Array();
